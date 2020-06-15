@@ -44,9 +44,10 @@ describe("Sanity tests", () => {
         testCase.OriginLocation,
         testCase.DestinationLocation
       );
-      const tikTakResult = routes.tikTakResult;
-      const titTakStatus = tikTakResult.titTakStatus;
-      expect(titTakStatus).to.equal(testCase.ServerCodeExpected);
+      //const tikTakResult = routes.tikTakResult;
+      //const titTakStatus = tikTakResult.titTakStatus;
+      //expect(titTakStatus).to.equal(testCase.ServerCodeExpected);
+      expect(routes.hasTikTakResult()).to.equal(false);
     });
   }
 });
