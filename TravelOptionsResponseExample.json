@@ -1,0 +1,57 @@
+{
+    "error": {},
+    "data": {
+        "updates": [
+            {
+                "pickupStop": {
+                    "walkTime": 77,
+                    "location": "32.000949,34.826842",
+                    "name": "הזית/שבזי 35417",
+                    "time": 1592218894043,
+                    "timeQuote": "ETA"
+                },
+                "dropoffStop": {
+                    "walkTime": 26,
+                    "location": "32.003863,34.834529",
+                    "name": "בגין/טרומפלדור 33292",
+                    "time": 1592219155382,
+                    "timeQuote": "ETA"
+                },
+                "destination": "32.003937, 34.834928",
+                "origin": "32.001690, 34.826087",
+                "vehicle": {
+                    "headSign": "-",
+                    "type": "miniBus",
+                    "numberOfSeats": 1,
+                    "driverName": "ניר ר",
+                    "location": "32.002159,34.828201",
+                    "licensePlate": "141-90-750"
+                },
+                "creditCardPrice": 12.5,
+                "listPrice": 12.5,
+                "expiration": 30,
+                "status": "OK",
+                "updatedOn": "2020-06-15T11:00:17.167Z"
+            }
+        ],
+        "provider": "moovit",
+        "providerId": "QGNkNDhlZjQyMjQ1NTRkYTY5NzA5ZDY3MTg5MGFjNDI2",
+        "userId": "",
+        "validForBooking": true,
+        "searchParams": {
+            "provider": "moovit",
+            "providerId": "QGNkNDhlZjQyMjQ1NTRkYTY5NzA5ZDY3MTg5MGFjNDI2",
+            "origin": "32.001690, 34.826087",
+            "destination": "32.003937, 34.834928",
+            "requestId": "b01ee50d-6d5f-e66b-2034-9ad18bbac878",
+            "numberOfSeats": 1,
+            "accessibleVehicleRequired": false,
+            "transitRoutingPreference": "",
+            "userId": "",
+            "userName": "",
+            "userPhone": "",
+            "moovitSession": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ7XCJtZXRyb0lkXCI6MSxcInpvbmVJZFwiOjQ3LFwic2NlbmFyaW9JZFwiOjMwLFwic2NlbmFyaW9TdGFydFRpbWVcIjoxNTkyMTY4NDc0MDUyLFwiZXhwaXJhdGlvblwiOjE1OTIyNTQ3OTkwMDAsXCJleGVjdXRpb25JZFwiOjB9IiwiZXhwIjoxNTkyMjU0Nzk5fQ.tF3Y-iD6xQ3zcow9e2tyee9eae2mWxW7R8WEdCOE-6zxY5E19s2VLDmoEXihdArA",
+            "departureTime": "1592218816571"
+        }
+    }
+}

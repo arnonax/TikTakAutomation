@@ -1,0 +1,5 @@
+{
+  "tikTakBaseUrl": "https://prdservice.egged.co.il/",
+  "testCasesCsvFilePath": "./configuration//TestCasesSearchStatuses.csv",
+  "apiKey": "CeAvY1nIbg9h1cdeJ5KSc5foV4uu3mas5oGPNfRk"
+}
