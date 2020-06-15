@@ -1,5 +1,7 @@
 {
-  "tikTakBaseUrl": "https://prdservice.egged.co.il/",
+  "tikTakBaseUrl": "https://api.qa.tiktak.egged.co.il/",
+  "tikTakBaseUrl_prod": "https://prdservice.egged.co.il/",
   "testCasesCsvFilePath": "./configuration//TestCasesSearchStatuses.csv",
-  "apiKey": "CeAvY1nIbg9h1cdeJ5KSc5foV4uu3mas5oGPNfRk"
+  "apiKey": "168EECEbPU5DyJIjS43qj9Fbq7nkCUSs6yePeaAO",
+  "apiKey_prod": "CeAvY1nIbg9h1cdeJ5KSc5foV4uu3mas5oGPNfRk"
 }
