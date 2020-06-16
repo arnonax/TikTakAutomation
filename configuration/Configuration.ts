@@ -4,8 +4,14 @@ import { TestCase } from "./TestCase";
 
 export class Configuration {
 	private _configurationData: any;
+
+	tikTakBaseUrl: string;
+	apiKey: string;
+
 	constructor(configurationData: any) {
 		this._configurationData = configurationData;
+		this.tikTakBaseUrl = this._configurationData.tikTakBaseUrl;
+		this.apiKey = this._configurationData.apiKey;
 	}
 
 	GetTestData(): TestCase[] {

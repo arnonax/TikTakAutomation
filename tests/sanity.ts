@@ -8,8 +8,8 @@ var expect = require("chai").expect;
 describe("Sanity tests", () => {
 	const configuration = new Configuration(configurationData);
 	const tikTakApi = new TikTakApi(
-		configurationData.tikTakBaseUrl,
-		configurationData.apiKey
+		configuration.tikTakBaseUrl,
+		configuration.apiKey
 	);
 
 	const testData = configuration.GetTestData();
