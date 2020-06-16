@@ -1,45 +1,24 @@
 import { TikTakApi } from "../tikTak/TikTakApi";
-import configuration from "../configuration/TestConfiguration.json";
-import Papa from "papaparse";
-import { readFileSync } from "fs";
+import { Configuration } from "../configuration/Configuration";
+import configurationData from "../configuration/TestConfiguration.json";
+import { TestCase } from "../configuration/TestCase";
 
 var expect = require("chai").expect;
 
-class TestCase {
-	TestCase: string;
-	MoovitResponse: string;
-	ServerCodeExpected: string;
-	Conditions: string;
-	OriginLocation: string;
-	DestinationLocation: string;
-}
-
 describe("Sanity tests", () => {
+	const configuration = new Configuration(configurationData);
 	const tikTakApi = new TikTakApi(
-		configuration.tikTakBaseUrl,
-		configuration.apiKey
+		configurationData.tikTakBaseUrl,
+		configurationData.apiKey
 	);
-	const testCasesFile = readFileSync(
-		configuration.testCasesCsvFilePath,
-		"utf8"
-	);
-	const results = Papa.parse<TestCase>(testCasesFile, {
-		header: true,
-	});
 
-	const testData = results.data;
+	const testData = configuration.GetTestData();
 
 	for (const i in testData) {
 		const testCase = testData[i];
-		console.log(i + ":  " + testCase.TestCase);
-		console.log(i + ":  " + testCase.MoovitResponse);
-		console.log(i + ":  " + testCase.ServerCodeExpected);
-		console.log(i + ":  " + testCase.Conditions);
-		console.log(i + ":  " + testCase.OriginLocation);
-		console.log(i + ":  " + testCase.DestinationLocation);
 
 		it(testCase.TestCase, async () => {
-			PrintTestConditions(i, testData);
+			PrintTestConditions(Number(i), testData);
 			const routes = await tikTakApi.searchRoutes(
 				testCase.OriginLocation,
 				testCase.DestinationLocation
@@ -52,11 +31,16 @@ describe("Sanity tests", () => {
 	}
 });
 
-function PrintTestConditions(i: string, testData: any) {
+function PrintTestConditions(i: number, testData: TestCase[]) {
+	const testCase = testData[i];
 	console.log(
-		"Test Case number " +
-			i +
-			" MoovitResponse should be: " +
-			testData[i].MoovitResponse
+		`\nTest Case number ${i}: MoovitResponse should be: ${testCase.MoovitResponse}`
 	);
+	console.log(`Parameters:\n###########\n`);
+	console.log(`TestCase: ${testCase.TestCase}`);
+	console.log(`MoovitResponse: ${testCase.MoovitResponse}`);
+	console.log(`ServerCodeExpected: ${testCase.ServerCodeExpected}`);
+	console.log(`Conditions: ${testCase.Conditions}`);
+	console.log(`OriginLocation: ${testCase.OriginLocation}`);
+	console.log(`DestinationLocation: ${testCase.DestinationLocation}`);
 }
