@@ -4,6 +4,7 @@ import configurationData from "../configuration/TestConfiguration.json";
 import { TestCase } from "../configuration/TestCase";
 
 var expect = require("chai").expect;
+const addContext = require("mochawesome/addContext");
 
 describe("Sanity tests", () => {
 	const configuration = new Configuration(configurationData);
@@ -43,4 +44,6 @@ function PrintTestConditions(i: number, testData: TestCase[]) {
 	console.log(`Conditions: ${testCase.Conditions}`);
 	console.log(`OriginLocation: ${testCase.OriginLocation}`);
 	console.log(`DestinationLocation: ${testCase.DestinationLocation}`);
+	// addContext(this, "Parameters:\n###########\n");
+	// addContext(this, testCase);
 }
