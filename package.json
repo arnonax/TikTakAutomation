@@ -12,14 +12,18 @@
 	"dependencies": {
 		"@types/node": "^14.0.12",
 		"@types/papaparse": "^5.0.4",
+		"http": "0.0.1-security",
+		"request": "^2.88.2",
 		"typescript": "^3.9.5"
 	},
 	"mocha": {
 		"spec": "tests/**/*.ts"
 	},
 	"devDependencies": {
+		"@types/bluebird": "^3.5.32",
 		"@types/chai": "^4.2.11",
 		"@types/mocha": "^7.0.2",
+		"@types/request": "^2.48.5",
 		"axios": "^0.19.2",
 		"chai": "^4.2.0",
 		"mocha": "^7.2.0",

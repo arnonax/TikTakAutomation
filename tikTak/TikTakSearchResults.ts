@@ -1,19 +1,17 @@
 import { TitTakResult } from "./TitTakResult";
+import { TravelOptionState } from "../typescript-node-client/api";
 
 export class TikTakSearchResults {
 	getStatus() {
 		throw new Error("Method not implemented.");
 	}
-	private _responseData: any;
+	private _responseData: TravelOptionState;
 
-	hasTikTakResult(): boolean {
-		return this._responseData.data.travelOptions !== undefined;
-	}
 	get tikTakResult(): TitTakResult {
 		return new TitTakResult();
 	}
 
-	constructor(responseData: any) {
+	constructor(responseData: TravelOptionState) {
 		this._responseData = responseData;
 	}
 }
