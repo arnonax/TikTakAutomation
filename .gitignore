@@ -99,5 +99,5 @@ tests/cases/user/prettier/prettier
 .eslintcache
 
 out/
-/mochawesome-report/mochawesome.html
-/mochawesome-report/mochawesome.json
+mochawesome-report/
+mochawesome-reports/
