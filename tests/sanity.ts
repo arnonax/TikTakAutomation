@@ -20,14 +20,12 @@ describe("Sanity tests", function () {
 
 		it(testCase.TestCase, async function () {
 			PrintTestConditions(this, Number(i), testData);
-			const routes = await tikTakApi.searchRoutes(
+			const travelOptions = await tikTakApi.getTravelOptions(
 				testCase.OriginLocation,
 				testCase.DestinationLocation
 			);
-			//const tikTakResult = routes.tikTakResult;
-			//const titTakStatus = tikTakResult.titTakStatus;
-			//expect(titTakStatus).to.equal(testCase.ServerCodeExpected);
-			expect(routes.hasTikTakResult()).to.equal(false);
+			const status = travelOptions.getStatus();
+			expect(status).to.equal(testCase.ServerCodeExpected);
 		});
 	}
 });
