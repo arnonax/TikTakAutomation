@@ -6,7 +6,7 @@ import { TestCase } from "../configuration/TestCase";
 var expect = require("chai").expect;
 const addContext = require("mochawesome/addContext");
 
-describe("Sanity tests", function () {
+describe("Sanity tests", () => {
 	const configuration = new Configuration(configurationData);
 	const tikTakApi = new TikTakApi(
 		configuration.tikTakBaseUrl,
@@ -18,9 +18,8 @@ describe("Sanity tests", function () {
 	for (const i in testData) {
 		const testCase = testData[i];
 
-		it(testCase.TestCase, async function () {
+		it(testCase.TestCase, async () => {
 			PrintTestConditions(Number(i), testData);
-
 			const routes = await tikTakApi.searchRoutes(
 				testCase.OriginLocation,
 				testCase.DestinationLocation
@@ -33,7 +32,7 @@ describe("Sanity tests", function () {
 	}
 });
 
-function PrintTestConditions(this: any, i: number, testData: TestCase[]) {
+function PrintTestConditions(i: number, testData: TestCase[]) {
 	const testCase = testData[i];
 	console.log(
 		`\nTest Case number ${i}: MoovitResponse should be: ${testCase.MoovitResponse}`
@@ -45,10 +44,6 @@ function PrintTestConditions(this: any, i: number, testData: TestCase[]) {
 	console.log(`Conditions: ${testCase.Conditions}`);
 	console.log(`OriginLocation: ${testCase.OriginLocation}`);
 	console.log(`DestinationLocation: ${testCase.DestinationLocation}`);
-
-	console.log(
-		"this printed inside PrintTestConditions function: --->>> " + this
-	);
 	// addContext(this, "Parameters:\n###########\n");
 	// addContext(this, testCase);
 }
