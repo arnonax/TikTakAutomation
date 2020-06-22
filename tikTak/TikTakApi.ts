@@ -1,20 +1,18 @@
 import { TikTakSearchResults } from "./TikTakSearchResults";
-import * as api from "../typescript-node-client/api";
-import * as http from "http";
+import Axios, { AxiosResponse } from "axios";
+import {
+	RouteOptionsResponse,
+	TravelOptionState,
+} from "../typescript-node-client/api";
 
 interface ITikTakResponseMessage {
 	error?: Error;
 }
 
-type Response<TBody extends ITikTakResponseMessage> = {
-	response: http.IncomingMessage;
-	body: TBody;
-};
-
-// Defining this type here because swagger doesn't match the actual structure
-type TravelOptionsResponseBody = {
+// TODO: fix swagger to define the reponse of TravelOptions correctly.
+type TravelOptionsResponse = {
 	error?: Error;
-	data: api.TravelOptionState;
+	data: TravelOptionState;
 };
 
 export class TikTakApi {
@@ -30,37 +28,38 @@ export class TikTakApi {
 		origin: string,
 		destination: string
 	): Promise<TikTakSearchResults> {
-		const routeOptionsResponse: Response<api.RouteOptionsResponse> = await new api.RoutesApi(
-			this._baseUrl
-		).getRouteOptions(origin, destination, "bus");
+		const routeOptionsResponse = await Axios.get<RouteOptionsResponse>(
+			`${this._baseUrl}routes/options?origin=${origin}&destination=${destination}&transit_mode=bus`,
+			{ headers: { "x-api-key": this._apiKey } }
+		);
 
 		this.validateResponse(routeOptionsResponse);
-		const requestId = routeOptionsResponse.body.data?.requestId;
+		const requestId = routeOptionsResponse.data.data?.requestId;
 		if (requestId === undefined)
 			throw new Error(
 				"requestId is not defined in route options response"
 			);
 
-		const travelOptionsResponse = <Response<TravelOptionsResponseBody>>(
-			await new api.TravelOptionsApi(this._baseUrl).getTravelOption(
-				requestId
-			)
+		const travelOptionsResponse = await Axios.get<TravelOptionsResponse>(
+			`${this._baseUrl}travel-options/${requestId}`,
+			{ headers: { "x-api-key": this._apiKey } }
 		);
+
 		this.validateResponse(travelOptionsResponse);
 
-		return new TikTakSearchResults(travelOptionsResponse.body.data);
+		return new TikTakSearchResults(travelOptionsResponse.data.data);
 	}
 
-	validateResponse<TBody extends ITikTakResponseMessage>(
-		routeOptionsResponse: Response<TBody>
+	validateResponse<T extends ITikTakResponseMessage>(
+		response: AxiosResponse<T>
 	) {
-		const statusCode = routeOptionsResponse.response.statusCode;
+		const statusCode = response.status;
 		if (statusCode === undefined || statusCode >= 300)
 			throw new Error(
 				`Invalid status received from server: ${statusCode}`
 			);
 
-		const error = routeOptionsResponse.body.error;
+		const error = response.data.error;
 		if (JSON.stringify(error) != "{}")
 			throw new Error(`Received error from server: ${error}`);
 	}

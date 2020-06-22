@@ -1,9 +1,14 @@
 import { TitTakResult } from "./TitTakResult";
-import { TravelOptionState } from "../typescript-node-client/api";
+import {
+	TravelOptionState,
+	TravelOptionResponse,
+} from "../typescript-node-client/api";
 
 export class TikTakSearchResults {
-	getStatus() {
-		throw new Error("Method not implemented.");
+	getStatus(): string {
+		return TravelOptionResponse.StatusEnum[
+			this._responseData.updates![0].status!
+		];
 	}
 	private _responseData: TravelOptionState;
 
