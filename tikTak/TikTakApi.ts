@@ -1,11 +1,9 @@
 import { TikTakSearchResults } from "./TikTakSearchResults";
-import Axios from "axios";
 import {
 	RouteOptionsResponse,
 	TravelOptionState,
 } from "../typescript-node-client/api";
 import "../infrastructure/logger";
-import { Logger } from "../infrastructure/logger";
 import { ApiClient } from "../infrastructure/apiClient";
 
 // TODO: fix swagger to define the reponse of TravelOptions correctly.
