@@ -14,10 +14,7 @@ export class ApiClient {
 		this._apiKey = apiKey;
 	}
 
-	async get<TResponse>(
-		path: string,
-		queryStringArgs?: any
-	): Promise<TResponse> {
+	async get<TResponse>(path: string, queryStringArgs?: any): Promise<TResponse> {
 		let queryString = "";
 		if (queryStringArgs) {
 			queryString = Object.keys(queryStringArgs)
@@ -39,17 +36,15 @@ export class ApiClient {
 		return response.data;
 	}
 
-	private validateResponse<T extends ITikTakResponseMessage>(
-		response: AxiosResponse<T>
-	) {
+	private validateResponse<T extends ITikTakResponseMessage>(response: AxiosResponse<T>) {
 		const statusCode = response.status;
-		if (statusCode === undefined || statusCode >= 300)
-			throw new Error(
-				`Invalid status received from server: ${statusCode}`
-			);
+		if (statusCode === undefined || statusCode >= 300) {
+			throw new Error(`Invalid status received from server: ${statusCode}`);
+		}
 
 		const error = response.data.error;
-		if (JSON.stringify(error) != "{}")
+		if (JSON.stringify(error) != "{}") {
 			throw new Error(`Received error from server: ${error}`);
+		}
 	}
 }

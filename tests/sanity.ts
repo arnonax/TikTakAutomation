@@ -9,10 +9,7 @@ const addContext = require("mochawesome/addContext");
 
 describe("Sanity tests", function () {
 	const configuration = new Configuration(configurationData);
-	const tikTakApi = new TikTakApi(
-		configuration.tikTakBaseUrl,
-		configuration.apiKey
-	);
+	const tikTakApi = new TikTakApi(configuration.tikTakBaseUrl, configuration.apiKey);
 
 	before(function () {
 		Logger.init((message) => {
@@ -38,9 +35,7 @@ describe("Sanity tests", function () {
 
 function PrintTestConditions(test: any, i: number, testData: TestCase[]) {
 	const testCase = testData[i];
-	console.log(
-		`\nTest Case number ${i}: MoovitResponse should be: ${testCase.MoovitResponse}`
-	);
+	console.log(`\nTest Case number ${i}: MoovitResponse should be: ${testCase.MoovitResponse}`);
 	addContext(test, "Parameters:");
 	addContext(test, JSON.stringify(testCase, null, "   "));
 }
