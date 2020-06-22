@@ -2,6 +2,7 @@ import { TikTakApi } from "../tikTak/TikTakApi";
 import { Configuration } from "../configuration/Configuration";
 import configurationData from "../configuration/TestConfiguration.json";
 import { TestCase } from "../configuration/TestCase";
+import { Logger } from "../infrastructure/logger";
 
 var expect = require("chai").expect;
 const addContext = require("mochawesome/addContext");
@@ -13,6 +14,11 @@ describe("Sanity tests", function () {
 		configuration.apiKey
 	);
 
+	before(function () {
+		Logger.init((message) => {
+			addContext(this, message);
+		});
+	});
 	const testData = configuration.GetTestData();
 
 	for (const i in testData) {

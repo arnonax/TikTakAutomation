@@ -4,6 +4,8 @@ import {
 	RouteOptionsResponse,
 	TravelOptionState,
 } from "../typescript-node-client/api";
+import "../infrastructure/logger";
+import { Logger } from "../infrastructure/logger";
 
 interface ITikTakResponseMessage {
 	error?: Error;
@@ -28,24 +30,42 @@ export class TikTakApi {
 		origin: string,
 		destination: string
 	): Promise<TikTakSearchResults> {
+		Logger.logMessage(
+			`Sending RouteOptions request from ${origin} to ${destination}`
+		);
+
 		const routeOptionsResponse = await Axios.get<RouteOptionsResponse>(
 			`${this._baseUrl}routes/options?origin=${origin}&destination=${destination}&transit_mode=bus`,
 			{ headers: { "x-api-key": this._apiKey } }
 		);
 
 		this.validateResponse(routeOptionsResponse);
+		Logger.logMessage(
+			`Got RouteOptions response: ${JSON.stringify(
+				routeOptionsResponse.data
+			)}`
+		);
+
 		const requestId = routeOptionsResponse.data.data?.requestId;
 		if (requestId === undefined)
 			throw new Error(
 				"requestId is not defined in route options response"
 			);
 
+		Logger.logMessage(
+			`Sending TravelOptions request with requestId ${requestId}`
+		);
 		const travelOptionsResponse = await Axios.get<TravelOptionsResponse>(
 			`${this._baseUrl}travel-options/${requestId}`,
 			{ headers: { "x-api-key": this._apiKey } }
 		);
 
 		this.validateResponse(travelOptionsResponse);
+		Logger.logMessage(
+			`Got TravelOptions response: ${JSON.stringify(
+				travelOptionsResponse.data
+			)}`
+		);
 
 		return new TikTakSearchResults(travelOptionsResponse.data.data);
 	}
