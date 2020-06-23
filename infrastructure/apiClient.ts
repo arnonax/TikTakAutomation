@@ -6,13 +6,7 @@ export interface ITikTakResponseMessage {
 }
 
 export class ApiClient {
-	private _baseUrl: string;
-	private _apiKey: string;
-
-	constructor(baseUrl: string, apiKey: string) {
-		this._baseUrl = baseUrl;
-		this._apiKey = apiKey;
-	}
+	constructor(private _baseUrl: string, private _apiKey: string) {}
 
 	async get<TResponse>(path: string, queryStringArgs?: any): Promise<TResponse> {
 		let queryString = "";
