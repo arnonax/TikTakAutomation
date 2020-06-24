@@ -19,7 +19,9 @@
 				"-r",
 				"ts-node/register",
 				"--reporter",
-				"mochawesome"
+				"mochawesome",
+				"--reporter-option",
+				"charts=true"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
 			"skipFiles": ["<node_internals>/**"]
