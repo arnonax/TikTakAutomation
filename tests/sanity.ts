@@ -33,6 +33,10 @@ describe("Sanity tests", function () {
 			expect(status).to.equal(testCase.ServerCodeExpected);
 		});
 	}
+
+	it("Book new Travel", async function () {
+		const loginResponse = await tikTakApi.loginVerify(configuration.phoneNumber, configuration.verificationCode);
+	});
 });
 
 function PrintTestConditions(test: any, i: number, testData: TestCase[]) {

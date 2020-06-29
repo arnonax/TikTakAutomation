@@ -4,6 +4,8 @@ import "../infrastructure/logger";
 import { ApiClient } from "../infrastructure/apiClient";
 import ApiEndpointsPaths from "../configuration/TikTakApiEndpointsPaths.json";
 import { Logger } from "../infrastructure/logger";
+import { LoginVerificationResponse } from "../Models/LoginVerificationResponse";
+import { LoginVerificationRequest } from "../Models/LoginVerificationRequest";
 
 // TODO: fix swagger to define the reponse of TravelOptions correctly.
 type TravelOptionsResponse = {
@@ -38,5 +40,17 @@ export class TikTakApi {
 		);
 
 		return new TikTakSearchResults(travelOptionsResponse.data);
+	}
+
+	async loginVerify(phoneNumber: string, verificationCode: string): Promise<LoginVerificationResponse> {
+		const path = ApiEndpointsPaths.verify;
+		const loginVerificationRequest: LoginVerificationRequest = { phoneNumber, verificationCode };
+
+		const loginResponse = await this._apiClient.post<LoginVerificationResponse>(
+			ApiEndpointsPaths.verify,
+			undefined,
+			loginVerificationRequest
+		);
+		return loginResponse;
 	}
 }
