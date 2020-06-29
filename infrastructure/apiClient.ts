@@ -7,10 +7,15 @@ export interface ITikTakResponseMessage {
 }
 
 export class ApiClient {
-	constructor(private _baseUrl: string, private _apiKey: string) {}
+	constructor(private _baseUrl: string, private _apiKey: string, private _authenticationToken: string) {}
 
 	private _axiosRequestConfig: AxiosRequestConfig = {
-		headers: { "x-api-key": this._apiKey },
+		headers: {
+			"x-api-key": this._apiKey,
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${this._authenticationToken}`,
+		},
 	};
 
 	async get<TResponse>(path: string, queryStringArgs?: any): Promise<TResponse> {

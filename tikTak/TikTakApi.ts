@@ -1,5 +1,5 @@
 import { TikTakSearchResults } from "./TikTakSearchResults";
-import { RouteOptionsResponse, TravelOptionState } from "../typescript-node-client/api";
+import { RouteOptionsResponse, TravelOptionState, TravelStateResponse } from "../typescript-node-client/api";
 import "../infrastructure/logger";
 import { ApiClient } from "../infrastructure/apiClient";
 import ApiEndpointsPaths from "../configuration/TikTakApiEndpointsPaths.json";
@@ -16,8 +16,8 @@ type TravelOptionsResponse = {
 export class TikTakApi {
 	private _apiClient: ApiClient;
 
-	constructor(baseUrl: string, apiKey: string) {
-		this._apiClient = new ApiClient(baseUrl, apiKey);
+	constructor(baseUrl: string, apiKey: string, authenticationToken: string) {
+		this._apiClient = new ApiClient(baseUrl, apiKey, authenticationToken);
 	}
 
 	async getTravelOptions(origin: string, destination: string): Promise<TikTakSearchResults> {
@@ -52,5 +52,12 @@ export class TikTakApi {
 			loginVerificationRequest
 		);
 		return loginResponse;
+	}
+
+	async getTravelState(): Promise<TravelStateResponse> {
+		throw new Error("Method not implemented.");
+	}
+	bookMeTravel(requestId: void) {
+		throw new Error("Method not implemented.");
 	}
 }

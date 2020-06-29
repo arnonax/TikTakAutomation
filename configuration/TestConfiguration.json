@@ -5,5 +5,7 @@
 	"apiKey": "168EECEbPU5DyJIjS43qj9Fbq7nkCUSs6yePeaAO",
 	"apiKey_prod": "CeAvY1nIbg9h1cdeJ5KSc5foV4uu3mas5oGPNfRk",
 	"phoneNumber": "+972523961897",
-	"verificationCode": "8121"
+	"verificationCode": "8121",
+	"authenticationToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iis5NzI1MjM5NjE4OTciLCJ1c2VyUm9sZSI6InVzZXIiLCJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJleHAiOjE1OTM0MzEyOTMsInVzZXJJZCI6Ijk5OTk5OTI2In0.3IGsqp1U4nEkNpPPQjLjRhHi3J3XmYOcTLLNuJ7AGvQ",
+	"refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6Iis5NzI1MjM5NjE4OTciLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNTk1MTU4MDkzfQ.Pw-CBU9w1wQRdyTSBUL1OAYfkcO3WTB9JsHGjIVO4CM"
 }
