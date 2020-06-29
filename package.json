@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
-		"test": "mocha -r ts-node/register --reporter mochawesome",
+		"test": "mocha --timeout 60000 -r ts-node/register --reporter mochawesome",
 		"dev": ""
 	},
 	"author": "Arnon & Yosef",
@@ -14,6 +14,7 @@
 		"@types/node": "^14.0.12",
 		"@types/papaparse": "^5.0.4",
 		"@types/request": "^2.48.5",
+		"readline-sync": "^1.4.10",
 		"request": "^2.88.2",
 		"typescript": "^3.9.5"
 	},

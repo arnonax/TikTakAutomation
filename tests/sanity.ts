@@ -6,6 +6,7 @@ import { Logger } from "../infrastructure/logger";
 
 var expect = require("chai").expect;
 const addContext = require("mochawesome/addContext");
+const readlineSync = require("readline-sync");
 
 describe("Sanity tests", function () {
 	const configuration = new Configuration(configurationData);
@@ -27,6 +28,7 @@ describe("Sanity tests", function () {
 				testCase.OriginLocation,
 				testCase.DestinationLocation
 			);
+
 			const status = travelOptions.getStatus();
 			expect(status).to.equal(testCase.ServerCodeExpected);
 		});

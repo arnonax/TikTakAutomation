@@ -5,7 +5,10 @@ export class Logger {
 		this._logMessageImpl = logMessageImpl;
 	}
 
-	static logMessage(message: string) {
+	static logMessage(message: string, toLogToConsole: boolean = false) {
 		this._logMessageImpl(message);
+		if (toLogToConsole) {
+			console.log(message);
+		}
 	}
 }

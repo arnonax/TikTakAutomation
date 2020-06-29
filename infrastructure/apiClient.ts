@@ -14,7 +14,9 @@ export class ApiClient {
 			queryString = Object.keys(queryStringArgs)
 				.map((key) => `${key}=${queryStringArgs[key]}`)
 				.join("&");
-			if (queryString.length > 0) queryString = "?" + queryString;
+			if (queryString.length > 0) {
+				queryString = "?" + queryString;
+			}
 		}
 		const fullUrl = `${this._baseUrl}${path}${queryString}`;
 
