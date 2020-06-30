@@ -7,16 +7,33 @@ export interface ITikTakResponseMessage {
 }
 
 export class ApiClient {
-	constructor(private _baseUrl: string, private _apiKey: string, private _authenticationToken: string) {}
+	constructor(private _baseUrl: string, private _apiKey: string, private _authenticationToken: string) {
+		this._axiosRequestConfig = this.createAxiosRequestConfig(true);
+	}
+	private _axiosRequestConfig: AxiosRequestConfig;
 
-	private _axiosRequestConfig: AxiosRequestConfig = {
-		headers: {
-			"x-api-key": this._apiKey,
-			Accept: "application/json",
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${this._authenticationToken}`,
-		},
-	};
+	private createAxiosRequestConfig(isContainedAuthorization: boolean = false): AxiosRequestConfig {
+		let axiosRequestConfig: AxiosRequestConfig;
+		if (isContainedAuthorization) {
+			axiosRequestConfig = {
+				headers: {
+					"x-api-key": this._apiKey,
+					Accept: "application/json",
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${this._authenticationToken}`,
+				},
+			};
+		} else {
+			axiosRequestConfig = {
+				headers: {
+					"x-api-key": this._apiKey,
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			};
+		}
+		return axiosRequestConfig;
+	}
 
 	async get<TResponse>(path: string, queryStringArgs?: any): Promise<TResponse> {
 		let queryString = "";

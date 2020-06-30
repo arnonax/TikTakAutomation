@@ -6,6 +6,8 @@ import ApiEndpointsPaths from "../configuration/TikTakApiEndpointsPaths.json";
 import { Logger } from "../infrastructure/logger";
 import { LoginVerificationResponse } from "../Models/LoginVerificationResponse";
 import { LoginVerificationRequest } from "../Models/LoginVerificationRequest";
+import AuthenticationStorage from "../Authentication/AuthenticationStorage.json";
+import { TokenRefreshResponse } from "../Authentication/TokenRefreshResponse";
 
 // TODO: fix swagger to define the reponse of TravelOptions correctly.
 type TravelOptionsResponse = {
@@ -16,8 +18,43 @@ type TravelOptionsResponse = {
 export class TikTakApi {
 	private _apiClient: ApiClient;
 
-	constructor(baseUrl: string, apiKey: string, authenticationToken: string) {
-		this._apiClient = new ApiClient(baseUrl, apiKey, authenticationToken);
+	constructor(private baseUrl: string, private apiKey: string) {}
+
+	async initialize() {
+		const updatedAuthenticationToken: string = await this.getUpdatedAuthenticationToken(this.baseUrl, this.apiKey);
+		this._apiClient = new ApiClient(this.baseUrl, this.apiKey, updatedAuthenticationToken);
+	}
+
+	private async getUpdatedAuthenticationToken(baseUrl: string, apiKey: string): Promise<string> {
+		const refreshToken = { refreshToken: AuthenticationStorage.refreshToken };
+		this._apiClient = new ApiClient(baseUrl, apiKey, AuthenticationStorage.authenticationToken);
+		const tokenRefreshResponse = await this._apiClient.post<TokenRefreshResponse>(
+			ApiEndpointsPaths["token-refresh"],
+			undefined,
+			refreshToken
+		);
+		const newAuthenticationToken = tokenRefreshResponse.data.authenticationToken;
+		const newRefreshToken = tokenRefreshResponse.data.refreshToken;
+		await this.saveNewAuthenticationToken(newAuthenticationToken, newRefreshToken);
+		this._apiClient = new ApiClient(baseUrl, apiKey, newAuthenticationToken);
+		return newAuthenticationToken;
+	}
+	private async saveNewAuthenticationToken(newAuthenticationToken: string, newRefreshToken: string) {
+		const fs = require("fs");
+		const tokenObject = {
+			authenticationToken: newAuthenticationToken,
+			refreshToken: newRefreshToken,
+		};
+		let tokenJson = JSON.stringify(tokenObject, null, 2);
+
+		Logger.logMessage("Saving AuthenticationStorage file....");
+		fs.writeFile("../Authentication/AuthenticationStorage.json", tokenJson, (err: any) => {
+			if (err) {
+				Logger.logMessage(JSON.stringify(err));
+				//throw err;
+			}
+			Logger.logMessage("Data written to AuthenticationStorage.json file");
+		});
 	}
 
 	async getTravelOptions(origin: string, destination: string): Promise<TikTakSearchResults> {
@@ -39,7 +76,7 @@ export class TikTakApi {
 			`${ApiEndpointsPaths["travel-options"]}/${requestId}`
 		);
 
-		return new TikTakSearchResults(travelOptionsResponse.data);
+		return new TikTakSearchResults(requestId, travelOptionsResponse.data);
 	}
 
 	async loginVerify(phoneNumber: string, verificationCode: string): Promise<LoginVerificationResponse> {
@@ -57,7 +94,7 @@ export class TikTakApi {
 	async getTravelState(): Promise<TravelStateResponse> {
 		throw new Error("Method not implemented.");
 	}
-	bookMeTravel(requestId: void) {
+	async bookMeTravel(requestId: string) {
 		throw new Error("Method not implemented.");
 	}
 }

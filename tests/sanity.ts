@@ -9,18 +9,15 @@ var expect = require("chai").expect;
 const addContext = require("mochawesome/addContext");
 const readlineSync = require("readline-sync");
 
-describe("Sanity tests", function () {
+describe("Sanity tests", async function () {
 	const configuration = new Configuration(configurationData);
-	const tikTakApi = new TikTakApi(
-		configuration.tikTakBaseUrl,
-		configuration.apiKey,
-		configuration.authenticationToken
-	);
+	const tikTakApi = new TikTakApi(configuration.tikTakBaseUrl, configuration.apiKey);
 
-	before(function () {
+	before(async function () {
 		Logger.init((message) => {
 			addContext(this, message);
 		});
+		await tikTakApi.initialize();
 	});
 	const testData = configuration.GetTestData();
 
@@ -41,16 +38,17 @@ describe("Sanity tests", function () {
 
 	it("Book new Travel", async function () {
 		// Arrange
-		const travelOptions = await tikTakApi.getTravelOptions("", "");
+		// Activate Driver
+		const travelOptions = await tikTakApi.getTravelOptions("31.9966686, 34.8281923", "32.0015104, 34.8274526");
 		const status = travelOptions.getStatus();
-		const requestId = travelOptions.getRequestId();
+		const requestId = travelOptions.requestId;
 		await travelOptions.waitUntilValidForBooking();
 
 		// Act
 		await tikTakApi.bookMeTravel(requestId);
 		const travelsState: TravelStateResponse = await tikTakApi.getTravelState();
 
-		//Assert
+		// Assert
 		expect(travelsState.state).to.equal(TravelStateResponse.StateEnum.Assigned);
 	});
 });
