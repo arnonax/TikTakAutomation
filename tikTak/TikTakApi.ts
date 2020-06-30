@@ -40,7 +40,7 @@ export class TikTakApi {
 		return newAuthenticationToken;
 	}
 	private async saveNewAuthenticationToken(newAuthenticationToken: string, newRefreshToken: string) {
-		const fs = require("fs");
+		const fs = require("fs").promises;
 		const tokenObject = {
 			authenticationToken: newAuthenticationToken,
 			refreshToken: newRefreshToken,
@@ -48,10 +48,9 @@ export class TikTakApi {
 		let tokenJson = JSON.stringify(tokenObject, null, 2);
 
 		Logger.logMessage("Saving AuthenticationStorage file....");
-		fs.writeFile("../Authentication/AuthenticationStorage.json", tokenJson, (err: any) => {
+		await fs.writeFile("./Authentication/AuthenticationStorage.json", tokenJson, (err: any) => {
 			if (err) {
 				Logger.logMessage(JSON.stringify(err));
-				//throw err;
 			}
 			Logger.logMessage("Data written to AuthenticationStorage.json file");
 		});
