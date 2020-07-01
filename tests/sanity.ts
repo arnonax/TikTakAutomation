@@ -27,16 +27,16 @@ describe("Sanity tests", async function () {
 	for (const i in testData) {
 		const testCase = testData[i];
 
-		it(testCase.TestCase, async function () {
-			PrintTestConditions(this, Number(i), testData);
-			const travelOptions = await tikTakApi.getTravelOptions(
-				testCase.OriginLocation,
-				testCase.DestinationLocation
-			);
+		// it(testCase.TestCase, async function () {
+		// 	PrintTestConditions(this, Number(i), testData);
+		// 	const travelOptions = await tikTakApi.getTravelOptions(
+		// 		testCase.OriginLocation,
+		// 		testCase.DestinationLocation
+		// 	);
 
-			const status = travelOptions.getStatus();
-			expect(status).to.equal(testCase.ServerCodeExpected);
-		});
+		// 	const status = travelOptions.getStatus();
+		// 	expect(status).to.equal(testCase.ServerCodeExpected);
+		// });
 	}
 
 	it("Book new Travel", async function () {
@@ -62,12 +62,13 @@ describe("Sanity tests", async function () {
 		Logger.logMessage(`BookMe TravelId: ${bookMeTravelResponse.travelId}`);
 		Logger.logMessage(`bookMeTravelResponse: ${JSON.stringify(bookMeTravelResponse)}`);
 
-		const travelStateResponse = await tikTakApi.getTravelState();
-		Logger.logMessage(`TravelStateResponse State: ${travelStateResponse.state}`);
+		//let travelStateResponse = await tikTakApi.getTravelState();
+		let travelStateResponse = await tikTakApi.waitUntilTravelState("scheduled.assigned");
+		Logger.logMessage(`TravelStateResponse State: ${JSON.stringify(travelStateResponse)}`);
 
 		// Assert
 		expect(bookMeTravelResponse.travelId).to.not.be.an("undefined");
-		expect(travelStateResponse.state).to.equal(TravelStateResponse.StateEnum.Assigned);
+		expect(travelStateResponse.state).to.equal("scheduled.assigned");
 	});
 });
 

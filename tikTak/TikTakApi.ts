@@ -21,6 +21,20 @@ type TravelOptionsResponse = {
 	data: TravelOptionState;
 };
 
+type TikTakResponse<T> = {
+	error?: Error;
+	data: T;
+};
+
+type TravelStateResponseFixed = {
+	state: State;
+};
+
+interface State {
+	state: string;
+	timestamp: string;
+}
+
 export class TikTakApi {
 	private _apiClient: ApiClient;
 
@@ -96,21 +110,40 @@ export class TikTakApi {
 		return loginResponse;
 	}
 
-	async getTravelState(): Promise<TravelStateResponse> {
-		let travelStateResponse = await this._apiClient.get<TravelStateResponse>(
+	async getTravelState(): Promise<TravelStateResponseFixed> {
+		let travelStateResponse = await this._apiClient.get<TikTakResponse<TravelStateResponseFixed>>(
 			`${ApiEndpointsPaths["travel-me-state"]}`
 		);
-		return travelStateResponse;
+		return travelStateResponse.data;
+	}
+
+	async waitUntilTravelState(
+		travelStateExpected: string,
+		timeoutSeconds: number = 30
+	): Promise<TravelStateResponseFixed> {
+		const now = new Date();
+		let untilTime = new Date();
+		untilTime.setSeconds(now.getSeconds() + timeoutSeconds);
+		do {
+			let travelStateResponse = await this.getTravelState();
+			await this.delay(1000);
+			Logger.logMessage("travelStateResponse: " + travelStateResponse.state.state);
+			if (travelStateResponse.state.state == travelStateExpected) {
+				Logger.logMessage(`TravelStateResponse as expected - OK`);
+				return travelStateResponse;
+			}
+		} while (new Date() < untilTime);
+		throw Error("The requeste TravelStateResponse is not found!");
 	}
 
 	async bookMeTravel(requestId: string): Promise<TravelResponse> {
 		const bookMeTravelRequest = { requestId: requestId, paymentMethod: "creditCard" };
-		let bookMeTravelResponse = await this._apiClient.post<TravelResponse>(
+		let bookMeTravelResponse = await this._apiClient.post<TikTakResponse<TravelResponse>>(
 			`${ApiEndpointsPaths["travels-book-me"]}`,
 			undefined,
 			bookMeTravelRequest
 		);
-		return bookMeTravelResponse;
+		return bookMeTravelResponse.data;
 	}
 
 	async waitUntilValidForBooking(requestId: string, timeoutSeconds: number = 30) {
