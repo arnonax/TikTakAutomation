@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import Papa from "papaparse";
-import { TestCase } from "./TestCase";
+import { TestCase } from "../TestData/TestCase";
 
 export class Configuration {
 	tikTakBaseUrl: string;

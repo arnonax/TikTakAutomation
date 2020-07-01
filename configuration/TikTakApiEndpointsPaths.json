@@ -3,5 +3,7 @@
 	"verify": "auth/mfa/verify",
 	"token-refresh": "auth/token/refresh",
 	"routes-options": "routes/options",
-	"travel-options": "travel-options"
+	"travel-options": "travel-options",
+	"travels-book-me": "travels/book/me",
+	"travel-me-state": "travels/me/state"
 }

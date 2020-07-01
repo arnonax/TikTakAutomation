@@ -1,0 +1,14 @@
+{
+	"Locations": [
+		{
+			"Title": "OriginUserLocation",
+			"Address": "Lilach 10, Beit Dagan",
+			"LatLong": "31.9966686, 34.8281923"
+		},
+		{
+			"Title": "DestinationUserLocation",
+			"Address": "Hadas 1, Beit Dagan",
+			"LatLong": "32.0015104, 34.8274526"
+		}
+	]
+}

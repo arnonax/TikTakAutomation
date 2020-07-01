@@ -1,5 +1,11 @@
 import { TikTakSearchResults } from "./TikTakSearchResults";
-import { RouteOptionsResponse, TravelOptionState, TravelStateResponse } from "../typescript-node-client/api";
+import {
+	RouteOptionsResponse,
+	TravelOptionState,
+	TravelStateResponse,
+	TravelOptionResponse,
+	TravelResponse,
+} from "../typescript-node-client/api";
 import "../infrastructure/logger";
 import { ApiClient } from "../infrastructure/apiClient";
 import ApiEndpointsPaths from "../configuration/TikTakApiEndpointsPaths.json";
@@ -91,9 +97,40 @@ export class TikTakApi {
 	}
 
 	async getTravelState(): Promise<TravelStateResponse> {
-		throw new Error("Method not implemented.");
+		let travelStateResponse = await this._apiClient.get<TravelStateResponse>(
+			`${ApiEndpointsPaths["travel-me-state"]}`
+		);
+		return travelStateResponse;
 	}
-	async bookMeTravel(requestId: string) {
-		throw new Error("Method not implemented.");
+
+	async bookMeTravel(requestId: string): Promise<TravelResponse> {
+		const bookMeTravelRequest = { requestId: requestId, paymentMethod: "creditCard" };
+		let bookMeTravelResponse = await this._apiClient.post<TravelResponse>(
+			`${ApiEndpointsPaths["travels-book-me"]}`,
+			undefined,
+			bookMeTravelRequest
+		);
+		return bookMeTravelResponse;
+	}
+
+	async waitUntilValidForBooking(requestId: string, timeoutSeconds: number = 30) {
+		const now = new Date();
+		let untilTime = new Date();
+		untilTime.setSeconds(now.getSeconds() + timeoutSeconds);
+		do {
+			let travelOptionsResponse = await this._apiClient.get<TravelOptionsResponse>(
+				`${ApiEndpointsPaths["travel-options"]}/${requestId}`
+			);
+			await this.delay(1000);
+			if (travelOptionsResponse.data.validForBooking) {
+				Logger.logMessage(`Driver is Valid for Booking - OK`);
+				return;
+			}
+		} while (new Date() < untilTime);
+		throw Error("Driver is not valid for booking!");
+	}
+
+	private delay(ms: number) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 }
