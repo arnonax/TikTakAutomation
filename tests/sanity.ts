@@ -68,7 +68,7 @@ describe("Sanity tests", async function () {
 
 		// Assert
 		expect(bookMeTravelResponse.travelId).to.not.be.an("undefined");
-		expect(travelStateResponse.state).to.equal("scheduled.assigned");
+		expect(travelStateResponse.state.state).to.equal("scheduled.assigned");
 	});
 });
 

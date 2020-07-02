@@ -126,7 +126,7 @@ export class TikTakApi {
 		untilTime.setSeconds(now.getSeconds() + timeoutSeconds);
 		do {
 			let travelStateResponse = await this.getTravelState();
-			await this.delay(1000);
+			await this.delay(5000);
 			Logger.logMessage("travelStateResponse: " + travelStateResponse.state.state);
 			if (travelStateResponse.state.state == travelStateExpected) {
 				Logger.logMessage(`TravelStateResponse as expected - OK`);
@@ -154,7 +154,7 @@ export class TikTakApi {
 			let travelOptionsResponse = await this._apiClient.get<TravelOptionsResponse>(
 				`${ApiEndpointsPaths["travel-options"]}/${requestId}`
 			);
-			await this.delay(1000);
+			await this.delay(5000);
 			if (travelOptionsResponse.data.validForBooking) {
 				Logger.logMessage(`Driver is Valid for Booking - OK`);
 				return;
