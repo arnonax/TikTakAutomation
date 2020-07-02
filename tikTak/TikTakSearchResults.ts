@@ -10,5 +10,5 @@ export class TikTakSearchResults {
 		return new TitTakResult();
 	}
 
-	constructor(private _responseData: TravelOptionState) {}
+	constructor(public requestId: string, private _responseData: TravelOptionState) {}
 }
