@@ -22,29 +22,36 @@ describe("Sanity tests", async function () {
 		});
 		await tikTakApi.initialize();
 	});
+	beforeEach(async function () {
+		console.log(`\n#####################\n`);
+		console.log(`\nTest Title: ${this.currentTest?.title}\n`);
+	});
 	const testData = configuration.GetTestData();
 
 	for (const i in testData) {
 		const testCase = testData[i];
 
-		// it(testCase.TestCase, async function () {
-		// 	PrintTestConditions(this, Number(i), testData);
-		// 	const travelOptions = await tikTakApi.getTravelOptions(
-		// 		testCase.OriginLocation,
-		// 		testCase.DestinationLocation
-		// 	);
+		it(testCase.TestCase, async function () {
+			return this.skip();
+			PrintTestConditions(this, Number(i), testData);
+			const travelOptions = await tikTakApi.getTravelOptions(
+				testCase.OriginLocation,
+				testCase.DestinationLocation
+			);
 
-		// 	const status = travelOptions.getStatus();
-		// 	expect(status).to.equal(testCase.ServerCodeExpected);
-		// });
+			const status = travelOptions.getStatus();
+			expect(status).to.equal(testCase.ServerCodeExpected);
+		});
 	}
 
 	it("Book new Travel", async function () {
 		// Arrange
 		const isDriverActivated = await readlineSync.question(
-			"Please activate the Driver, insert 'y' and press Enter\n"
+			`Please activate the Driver for Automation:
+DriverId = ${configuration.driverId}, VehicleId = ${configuration.vehicleId},
+insert 'y' and press Enter\n`
 		);
-		if (isDriverActivated == false) {
+		if (isDriverActivated != "y") {
 			throw Error("Driver should be activated!");
 		}
 		const locationsList: LocationsList = JSON.parse(JSON.stringify(locations));
@@ -53,18 +60,12 @@ describe("Sanity tests", async function () {
 		LocationTool.PrintLocations(origin, destination);
 
 		const travelOptions = await tikTakApi.getTravelOptions(origin.LatLong, destination.LatLong);
-		const status = travelOptions.getStatus();
 		const requestId = travelOptions.requestId;
 		await tikTakApi.waitUntilValidForBooking(requestId);
 
 		// Act
 		const bookMeTravelResponse: TravelResponse = await tikTakApi.bookMeTravel(requestId);
-		Logger.logMessage(`BookMe TravelId: ${bookMeTravelResponse.travelId}`);
-		Logger.logMessage(`bookMeTravelResponse: ${JSON.stringify(bookMeTravelResponse)}`);
-
-		//let travelStateResponse = await tikTakApi.getTravelState();
 		let travelStateResponse = await tikTakApi.waitUntilTravelState("scheduled.assigned");
-		Logger.logMessage(`TravelStateResponse State: ${JSON.stringify(travelStateResponse)}`);
 
 		// Assert
 		expect(bookMeTravelResponse.travelId).to.not.be.an("undefined");

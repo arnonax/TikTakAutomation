@@ -5,5 +5,7 @@
 	"apiKey": "168EECEbPU5DyJIjS43qj9Fbq7nkCUSs6yePeaAO",
 	"apiKey_prod": "CeAvY1nIbg9h1cdeJ5KSc5foV4uu3mas5oGPNfRk",
 	"phoneNumber": "+972523961897",
-	"verificationCode": "5143"
+	"verificationCode": "5143",
+	"driverId": "1",
+	"vehicleId": "5"
 }

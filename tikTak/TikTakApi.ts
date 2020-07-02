@@ -15,12 +15,7 @@ import { LoginVerificationRequest } from "../Models/LoginVerificationRequest";
 import AuthenticationStorage from "../Authentication/AuthenticationStorage.json";
 import { TokenRefreshResponse } from "../Authentication/TokenRefreshResponse";
 
-// TODO: fix swagger to define the reponse of TravelOptions correctly.
-type TravelOptionsResponse = {
-	error?: Error;
-	data: TravelOptionState;
-};
-
+// TODO: fix swagger to define the reponse correctly.
 type TikTakResponse<T> = {
 	error?: Error;
 	data: T;
@@ -91,7 +86,7 @@ export class TikTakApi {
 			throw new Error("requestId is not defined in route options response");
 		}
 
-		const travelOptionsResponse = await this._apiClient.get<TravelOptionsResponse>(
+		const travelOptionsResponse = await this._apiClient.get<TikTakResponse<TravelOptionState>>(
 			`${ApiEndpointsPaths["travel-options"]}/${requestId}`
 		);
 
@@ -133,7 +128,7 @@ export class TikTakApi {
 				return travelStateResponse;
 			}
 		} while (new Date() < untilTime);
-		throw Error("The requeste TravelStateResponse is not found!");
+		throw Error("The requested TravelStateResponse is not found!");
 	}
 
 	async bookMeTravel(requestId: string): Promise<TravelResponse> {
@@ -143,6 +138,7 @@ export class TikTakApi {
 			undefined,
 			bookMeTravelRequest
 		);
+		Logger.logMessage(`BookMe TravelId: ${bookMeTravelResponse.data.travelId}`);
 		return bookMeTravelResponse.data;
 	}
 
@@ -151,7 +147,7 @@ export class TikTakApi {
 		let untilTime = new Date();
 		untilTime.setSeconds(now.getSeconds() + timeoutSeconds);
 		do {
-			let travelOptionsResponse = await this._apiClient.get<TravelOptionsResponse>(
+			let travelOptionsResponse = await this._apiClient.get<TikTakResponse<TravelOptionState>>(
 				`${ApiEndpointsPaths["travel-options"]}/${requestId}`
 			);
 			await this.delay(5000);
