@@ -54,6 +54,7 @@ insert 'y' and press Enter\n`
 		if (isDriverActivated != "y") {
 			throw Error("Driver should be activated!");
 		}
+		console.log(`Please wait, Automation Tests are running..... `);
 		const locationsList: LocationsList = JSON.parse(JSON.stringify(locations));
 		const origin: Location = LocationTool.GetLocationByTitle(locationsList, "OriginUserLocation");
 		const destination: Location = LocationTool.GetLocationByTitle(locationsList, "DestinationUserLocation");
